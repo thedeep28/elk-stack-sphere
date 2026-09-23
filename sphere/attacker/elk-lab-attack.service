@@ -1,5 +1,5 @@
 [Unit]
-Description=BlueScope bounded adversarial baseline
+Description=BlueMon bounded adversarial baseline
 After=network-online.target
 Wants=network-online.target
 
@@ -7,4 +7,3 @@ Wants=network-online.target
 Type=oneshot
 ExecStart=/opt/elk-lab/aliases.sh
 ExecStart=/opt/elk-lab/baseline-attacks.sh
-

@@ -9,7 +9,7 @@ apt-get install -y --no-install-recommends openssh-server vsftpd curl jq
 id labadmin >/dev/null 2>&1 || useradd -m -s /bin/bash labadmin
 echo 'labadmin:training-only' | chpasswd
 mkdir -p /home/labadmin/upload /srv/shared
-echo 'Quarterly planning sample for BlueScope lab.' >/srv/shared/planning.txt
+echo 'Quarterly planning sample for BlueMon lab.' >/srv/shared/planning.txt
 chown -R labadmin:labadmin /home/labadmin/upload
 
 cat >/etc/ssh/sshd_config.d/90-elk-lab.conf <<'EOF'

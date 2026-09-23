@@ -1,10 +1,10 @@
-# Instructor Guide: BlueScope
+# Instructor Guide: BlueMon
 
 This file is for instructors and teaching assistants. Remove it from a student release if it contains local details or holdouts.
 
 ## Design intent
 
-BlueScope is a three-week, six-to-eight-person assignment emphasizing ELK operations, evidence-based detection, dynamic mitigation, and critical AI use. Automation creates a reproducible floor. Students must design new attacks, explain observables, build detections, and measure results.
+BlueMon is a three-week, six-to-eight-person assignment emphasizing ELK operations, evidence-based detection, dynamic mitigation, and critical AI use. Automation creates a reproducible floor. Students must design new attacks, explain observables, build detections, and measure results.
 
 ## SPHERE deployment
 

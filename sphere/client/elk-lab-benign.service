@@ -1,5 +1,5 @@
 [Unit]
-Description=BlueScope bounded benign workload
+Description=BlueMon bounded benign workload
 After=network-online.target
 Wants=network-online.target
 
@@ -7,4 +7,3 @@ Wants=network-online.target
 Type=oneshot
 ExecStart=/opt/elk-lab/aliases.sh
 ExecStart=/opt/elk-lab/benign-workload.sh
-

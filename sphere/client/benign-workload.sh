@@ -34,7 +34,7 @@ else
 fi
 
 tmp=$(mktemp)
-printf 'BlueScope benign transfer %s\n' "$tag" >"$tmp"
+printf 'BlueMon benign transfer %s\n' "$tag" >"$tmp"
 if curl --interface "$src" -sS --max-time 8 -u labadmin:training-only \
   -T "$tmp" "ftp://192.168.50.20/upload/${tag}.txt" >/dev/null 2>&1; then
   record ftp 192.168.50.20 true "upload=${tag}.txt"
@@ -42,4 +42,3 @@ else
   record ftp 192.168.50.20 false "upload=${tag}.txt"
 fi
 rm -f "$tmp"
-

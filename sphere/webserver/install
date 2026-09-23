@@ -33,7 +33,7 @@ server {
 EOF
 
 cat >/var/www/html/index.html <<'EOF'
-<!doctype html><title>BlueScope Portal</title><h1>BlueScope Portal</h1><p>Service operational.</p>
+<!doctype html><title>BlueMon Portal</title><h1>BlueMon Portal</h1><p>Service operational.</p>
 EOF
 cat >/var/www/html/robots.txt <<'EOF'
 User-agent: *

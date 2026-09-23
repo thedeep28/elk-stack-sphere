@@ -1,6 +1,6 @@
 from mergexp import *
 
-# BlueScope: six-node enterprise monitoring and response topology.
+# BlueMon: six-node enterprise monitoring and response topology.
 net = Network("elkdefense", addressing == ipv4, routing == static)
 
 gateway = net.node("gateway", image == "bullseye", proc.cores >= 2, memory.capacity >= gb(4))

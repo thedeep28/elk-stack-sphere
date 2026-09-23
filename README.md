@@ -1,4 +1,4 @@
-# BlueScope: Enterprise Monitoring, Detection, and Response with ELK
+# BlueMon: Enterprise Monitoring, Detection, and Response with ELK
 
 Created for team-based cybersecurity instruction on the SPHERE testbed.
 

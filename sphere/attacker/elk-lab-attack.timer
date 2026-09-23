@@ -1,5 +1,5 @@
 [Unit]
-Description=Run BlueScope bounded attack baseline
+Description=Run BlueMon bounded attack baseline
 
 [Timer]
 OnBootSec=5min
@@ -9,4 +9,3 @@ Persistent=true
 
 [Install]
 WantedBy=timers.target
-

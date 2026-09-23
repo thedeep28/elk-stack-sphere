@@ -40,7 +40,7 @@ case "$mode" in
     guard_target "$target" || exit 2
     for path in admin login private backup .git/config robots.txt; do
       curl --interface "$src" -sS -o /dev/null --max-time 5 \
-        -A 'BlueScope-baseline-enumerator/1.0' "http://${target}/${path}" || true
+        -A 'BlueMon-baseline-enumerator/1.0' "http://${target}/${path}" || true
       sleep 2
     done
     ;;
@@ -48,10 +48,9 @@ esac
 
 # The same adversary alias also looks ordinary, defeating permanent bad-IP labels.
 curl --interface "$src" -sS -o /dev/null --max-time 5 \
-  -A 'Mozilla/5.0 BlueScope mixed-source' "http://10.10.10.10/" || true
+  -A 'Mozilla/5.0 BlueMon mixed-source' "http://10.10.10.10/" || true
 
 jq -nc --arg ts "$start" --arg end "$(date --iso-8601=seconds)" \
   --arg id "$event_id" --arg behavior "$behavior" --arg src "$src" --arg dst "$target" \
   '{"@timestamp":$ts,"event.end":$end,"event.id":$id,"traffic.class":"attack","attack.behavior":$behavior,"source.ip":$src,"destination.ip":$dst,"bounded":true}' \
   >>"$log"
-
