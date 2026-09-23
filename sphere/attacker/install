@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+exec > >(tee -a /var/log/elk-lab-install.log) 2>&1
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get update
+apt-get install -y --no-install-recommends curl openssh-client sshpass jq iproute2 nmap
+
+install -d -m 0755 /opt/elk-lab /var/log/elk-lab
+install -m 0755 /tmp/attacker/aliases.sh /opt/elk-lab/aliases.sh
+install -m 0755 /tmp/attacker/baseline-attacks.sh /opt/elk-lab/baseline-attacks.sh
+install -m 0755 /tmp/attacker/student-attack-template.sh /opt/elk-lab/student-attack-template.sh
+install -m 0644 /tmp/attacker/elk-lab-attack.service /etc/systemd/system/elk-lab-attack.service
+install -m 0644 /tmp/attacker/elk-lab-attack.timer /etc/systemd/system/elk-lab-attack.timer
+
+/opt/elk-lab/aliases.sh
+touch /var/log/elk-lab/attacks.jsonl
+chmod 0640 /var/log/elk-lab/attacks.jsonl
+systemctl daemon-reload
+systemctl enable --now elk-lab-attack.timer
+printf 'attacker install complete %s\n' "$(date --iso-8601=seconds)"
+

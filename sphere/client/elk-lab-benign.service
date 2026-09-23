@@ -1,0 +1,10 @@
+[Unit]
+Description=BlueScope bounded benign workload
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/elk-lab/aliases.sh
+ExecStart=/opt/elk-lab/benign-workload.sh
+

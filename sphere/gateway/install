@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+exec > >(tee -a /var/log/elk-lab-install.log) 2>&1
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get update
+apt-get install -y --no-install-recommends iptables nftables tcpdump conntrack jq rsyslog
+
+cat >/etc/sysctl.d/90-elk-lab-router.conf <<'EOF'
+net.ipv4.ip_forward=1
+net.ipv4.conf.all.rp_filter=0
+net.ipv4.conf.default.rp_filter=0
+EOF
+sysctl --system
+
+mkdir -p /var/log/elk-lab /opt/elk-lab
+touch /var/log/elk-lab/firewall.log
+chmod 0755 /var/log/elk-lab /opt/elk-lab
+
+# Dedicated chains give students a safe, inspectable place for response rules.
+iptables -N ELKLAB_INPUT 2>/dev/null || true
+iptables -N ELKLAB_FORWARD 2>/dev/null || true
+iptables -C INPUT -j ELKLAB_INPUT 2>/dev/null || iptables -I INPUT 1 -j ELKLAB_INPUT
+iptables -C FORWARD -j ELKLAB_FORWARD 2>/dev/null || iptables -I FORWARD 1 -j ELKLAB_FORWARD
+
+iptables-save >/var/log/elk-lab/iptables.initial
+printf 'gateway install complete %s\n' "$(date --iso-8601=seconds)"
+

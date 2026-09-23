@@ -1,0 +1,17 @@
+# Student evidence and local experiment output
+evidence/
+submission/
+*.pcap
+*.pcapng
+*.log
+
+# Credentials and local configuration
+.env
+*.key
+*.pem
+pass.txt
+
+# Editor and operating-system files
+.DS_Store
+.idea/
+.vscode/

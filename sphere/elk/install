@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+exec > >(tee -a /var/log/elk-lab-install.log) 2>&1
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get update
+apt-get install -y --no-install-recommends curl jq ca-certificates gnupg lsof unzip
+
+cat >/etc/sysctl.d/90-elk-lab-elasticsearch.conf <<'EOF'
+vm.max_map_count=262144
+EOF
+sysctl --system
+
+mkdir -p /opt/elk-lab /srv/elk-data /var/log/elk-lab
+cat >/opt/elk-lab/README-FIRST.txt <<'EOF'
+This node is intentionally prepared but ELK is not installed.
+Students must choose, document, deploy, secure, and validate their ELK stack.
+Expected experiment address: 192.168.50.10/24.
+Do not commit credentials or enrollment tokens.
+EOF
+chmod 0755 /opt/elk-lab /srv/elk-data /var/log/elk-lab
+printf 'elk prerequisite install complete %s\n' "$(date --iso-8601=seconds)"
+

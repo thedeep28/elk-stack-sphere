@@ -1,0 +1,10 @@
+[Unit]
+Description=BlueScope bounded adversarial baseline
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/elk-lab/aliases.sh
+ExecStart=/opt/elk-lab/baseline-attacks.sh
+

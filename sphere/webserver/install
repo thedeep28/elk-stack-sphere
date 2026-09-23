@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+set -euo pipefail
+exec > >(tee -a /var/log/elk-lab-install.log) 2>&1
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get update
+apt-get install -y --no-install-recommends nginx dnsmasq openssh-server curl jq
+
+id labadmin >/dev/null 2>&1 || useradd -m -s /bin/bash labadmin
+echo 'labadmin:training-only' | chpasswd
+
+cat >/etc/ssh/sshd_config.d/90-elk-lab.conf <<'EOF'
+PasswordAuthentication yes
+PermitRootLogin no
+LogLevel VERBOSE
+EOF
+
+cat >/etc/nginx/sites-available/default <<'EOF'
+log_format elk_lab '$remote_addr [$time_iso8601] "$request" $status $body_bytes_sent '
+                   'rt=$request_time ua="$http_user_agent"';
+server {
+    listen 80 default_server;
+    server_name _;
+    access_log /var/log/nginx/access.log elk_lab;
+    root /var/www/html;
+    index index.html;
+
+    location = /health { return 200 'ok\n'; add_header Content-Type text/plain; }
+    location = /login { return 401 'authentication required\n'; add_header Content-Type text/plain; }
+    location = /admin { return 403 'forbidden\n'; add_header Content-Type text/plain; }
+    location /private/ { return 404 'not found\n'; }
+}
+EOF
+
+cat >/var/www/html/index.html <<'EOF'
+<!doctype html><title>BlueScope Portal</title><h1>BlueScope Portal</h1><p>Service operational.</p>
+EOF
+cat >/var/www/html/robots.txt <<'EOF'
+User-agent: *
+Disallow: /admin
+Disallow: /private
+EOF
+
+cat >/etc/dnsmasq.d/elk-lab.conf <<'EOF'
+listen-address=10.10.10.10
+bind-interfaces
+log-queries
+log-facility=/var/log/dnsmasq.log
+address=/portal.corp.test/10.10.10.10
+address=/files.corp.test/192.168.50.20
+address=/elk.corp.test/192.168.50.10
+EOF
+
+touch /var/log/dnsmasq.log
+systemctl restart ssh nginx dnsmasq
+printf 'webserver install complete %s\n' "$(date --iso-8601=seconds)"

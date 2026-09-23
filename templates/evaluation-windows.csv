@@ -1,0 +1,4 @@
+window_id,start_time,end_time,label,scenario_id,source_aliases,expected_rule,observed_alert,classification,notes
+example-benign-01,,,,,,,,,
+example-attack-01,,,,,,,,,
+

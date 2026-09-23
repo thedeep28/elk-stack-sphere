@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -euo pipefail
+exec > >(tee -a /var/log/elk-lab-install.log) 2>&1
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get update
+apt-get install -y --no-install-recommends openssh-server vsftpd curl jq
+
+id labadmin >/dev/null 2>&1 || useradd -m -s /bin/bash labadmin
+echo 'labadmin:training-only' | chpasswd
+mkdir -p /home/labadmin/upload /srv/shared
+echo 'Quarterly planning sample for BlueScope lab.' >/srv/shared/planning.txt
+chown -R labadmin:labadmin /home/labadmin/upload
+
+cat >/etc/ssh/sshd_config.d/90-elk-lab.conf <<'EOF'
+PasswordAuthentication yes
+PermitRootLogin no
+LogLevel VERBOSE
+EOF
+
+cat >/etc/vsftpd.conf <<'EOF'
+listen=YES
+listen_ipv6=NO
+anonymous_enable=NO
+local_enable=YES
+write_enable=YES
+local_umask=022
+chroot_local_user=YES
+allow_writeable_chroot=YES
+xferlog_enable=YES
+xferlog_std_format=NO
+log_ftp_protocol=YES
+vsftpd_log_file=/var/log/vsftpd.log
+pasv_enable=YES
+pasv_min_port=30000
+pasv_max_port=30010
+EOF
+
+touch /var/log/vsftpd.log
+systemctl restart ssh vsftpd
+printf 'fileserver install complete %s\n' "$(date --iso-8601=seconds)"

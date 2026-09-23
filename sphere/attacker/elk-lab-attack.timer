@@ -1,0 +1,12 @@
+[Unit]
+Description=Run BlueScope bounded attack baseline
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=3min
+RandomizedDelaySec=30s
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+

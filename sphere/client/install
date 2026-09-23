@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+exec > >(tee -a /var/log/elk-lab-install.log) 2>&1
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get update
+apt-get install -y --no-install-recommends curl dnsutils openssh-client sshpass jq iproute2
+
+install -d -m 0755 /opt/elk-lab /var/log/elk-lab
+install -m 0755 /tmp/client/aliases.sh /opt/elk-lab/aliases.sh
+install -m 0755 /tmp/client/benign-workload.sh /opt/elk-lab/benign-workload.sh
+install -m 0644 /tmp/client/elk-lab-benign.service /etc/systemd/system/elk-lab-benign.service
+install -m 0644 /tmp/client/elk-lab-benign.timer /etc/systemd/system/elk-lab-benign.timer
+
+/opt/elk-lab/aliases.sh
+touch /var/log/elk-lab/benign.jsonl
+systemctl daemon-reload
+systemctl enable --now elk-lab-benign.timer
+printf 'client install complete %s\n' "$(date --iso-8601=seconds)"
+

@@ -1,0 +1,9 @@
+source,producer,shipper,transport,index_or_stream,timestamp_field,parsed_fields,expected_rate,observed_delay,owner,status
+gateway,,,,,,,,,,
+webserver-nginx,,,,,,,,,,
+webserver-dns,,,,,,,,,,
+webserver-auth,,,,,,,,,,
+fileserver-auth,,,,,,,,,,
+fileserver-ftp,,,,,,,,,,
+client-workload,,,,,,,,,,
+

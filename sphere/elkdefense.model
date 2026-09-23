@@ -1,0 +1,32 @@
+from mergexp import *
+
+# BlueScope: six-node enterprise monitoring and response topology.
+net = Network("elkdefense", addressing == ipv4, routing == static)
+
+gateway = net.node("gateway", image == "bullseye", proc.cores >= 2, memory.capacity >= gb(4))
+elk = net.node("elk", image == "bullseye", proc.cores >= 4, memory.capacity >= gb(16))
+webserver = net.node("webserver", image == "bullseye", proc.cores >= 2, memory.capacity >= gb(4))
+fileserver = net.node("fileserver", image == "bullseye", proc.cores >= 2, memory.capacity >= gb(4))
+client = net.node("client", image == "bullseye", proc.cores >= 2, memory.capacity >= gb(2))
+attacker = net.node("attacker", image == "bullseye", proc.cores >= 2, memory.capacity >= gb(2))
+
+# Broad, distinct prefixes support many aliases without overlap.
+dmz = net.connect([webserver, gateway], capacity == mbps(100))
+legitimate = net.connect([client, gateway], capacity == mbps(100))
+adversary = net.connect([attacker, gateway], capacity == mbps(100))
+internal = net.connect([elk, fileserver, gateway], capacity == mbps(100))
+
+dmz[webserver].socket.addrs = ip4("10.10.10.10/8")
+dmz[gateway].socket.addrs = ip4("10.0.0.1/8")
+
+legitimate[client].socket.addrs = ip4("172.16.1.2/16")
+legitimate[gateway].socket.addrs = ip4("172.16.0.1/16")
+
+adversary[attacker].socket.addrs = ip4("172.17.1.2/16")
+adversary[gateway].socket.addrs = ip4("172.17.0.1/16")
+
+internal[elk].socket.addrs = ip4("192.168.50.10/24")
+internal[fileserver].socket.addrs = ip4("192.168.50.20/24")
+internal[gateway].socket.addrs = ip4("192.168.50.1/24")
+
+experiment(net)
