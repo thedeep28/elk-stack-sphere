@@ -29,4 +29,20 @@ else
   failed=1
 fi
 
+if ssh -o BatchMode=yes -o ConnectTimeout=10 client \
+    'test "$(systemctl is-active elk-lab-benign.service)" = active && test "$(pgrep -fc "/opt/elk-lab/benign-worker.sh [1-8]$")" -eq 8'; then
+  printf 'PASS eight benign workers active\n'
+else
+  printf 'FAIL eight benign workers active\n'
+  failed=1
+fi
+
+if ssh -o BatchMode=yes -o ConnectTimeout=10 attacker \
+    'test "$(systemctl is-active elk-lab-attack.timer)" = active && command -v attack-status >/dev/null'; then
+  printf 'PASS attack timer and status tool\n'
+else
+  printf 'FAIL attack timer and status tool\n'
+  failed=1
+fi
+
 exit "$failed"

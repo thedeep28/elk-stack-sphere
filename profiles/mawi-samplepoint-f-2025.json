@@ -1,0 +1,38 @@
+{
+  "profile_id": "mawi-samplepoint-f-2025-four-summaries-v1",
+  "generated_at": "2026-10-01",
+  "method": "Combined IPv4 and IPv6 packet counts from official MAWI protocol summary pages. Weights are normalized only across plain HTTP, SSH, and FTP because these are the protocols implemented by the current BlueMon service topology.",
+  "limitations": [
+    "Packet proportions are used as an interaction-selection approximation; they are not session proportions.",
+    "HTTPS and QUIC are excluded until the BlueMon Web service supports them.",
+    "FTP passive data flows may not be fully represented by port-label summaries.",
+    "Public summary pages do not expose per-flow file-size or duration distributions. Those bounded parameters remain explicit lab configuration values in traffic-profile.env."
+  ],
+  "traces": [
+    {
+      "id": "202501011400",
+      "url": "https://mawi.nezu.wide.ad.jp/mawi/samplepoint-F/2025/202501011400.html",
+      "packets": {"web": 8402557, "ssh": 1807364, "ftp": 28640}
+    },
+    {
+      "id": "202504091400",
+      "url": "https://mawi.nezu.wide.ad.jp/mawi/samplepoint-F/2025/202504091400.html",
+      "packets": {"web": 29385327, "ssh": 1985077, "ftp": 105274}
+    },
+    {
+      "id": "202507011400",
+      "url": "https://mawi.nezu.wide.ad.jp/mawi/samplepoint-F/2025/202507011400.html",
+      "packets": {"web": 28007030, "ssh": 1189540, "ftp": 63940}
+    },
+    {
+      "id": "202510011400",
+      "url": "https://mawi.nezu.wide.ad.jp/mawi/samplepoint-F/2025/202510011400.html",
+      "packets": {"web": 12319929, "ssh": 1412078, "ftp": 57042}
+    }
+  ],
+  "totals": {
+    "packets": {"web": 78114843, "ssh": 6394059, "ftp": 254896, "all_selected": 84763798},
+    "percent": {"web": 92.155902, "ssh": 7.543384, "ftp": 0.300713},
+    "basis_points": {"web": 9216, "ssh": 754, "ftp": 30, "total": 10000}
+  }
+}

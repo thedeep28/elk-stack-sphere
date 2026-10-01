@@ -162,7 +162,7 @@ From the XDC:
 bash "$HOME/organizations/elkdefense/validate-lab.sh"
 ```
 
-This checks SSH access to all six nodes, HTTP, DNS, and gateway forwarding. Every line should report `PASS`.
+This checks SSH access to all six nodes, HTTP, DNS, gateway forwarding, all eight benign workers, and the attack timer/status tool. Every line should report `PASS`.
 
 ## 9. Inspect node health
 
@@ -172,8 +172,8 @@ Run these targeted checks:
 ssh gateway 'ip -brief address; ip route; /usr/sbin/sysctl net.ipv4.ip_forward; sudo /usr/sbin/iptables -S ELKLAB_FORWARD'
 ssh webserver 'systemctl --no-pager --full status nginx dnsmasq ssh; ss -lntup'
 ssh fileserver 'systemctl --no-pager --full status ssh vsftpd; ss -lntup'
-ssh client 'systemctl --no-pager --full status elk-lab-benign.timer; ip -o -4 address | grep 172.16.10'
-ssh attacker 'systemctl --no-pager --full status elk-lab-attack.timer; ip -o -4 address | grep 172.17.20'
+ssh client 'systemctl --no-pager --full status elk-lab-benign.service; pgrep -af benign-worker.sh; ip -o -4 address | grep 172.16.10'
+ssh attacker 'systemctl --no-pager --full status elk-lab-attack.timer; sudo attack-status; ip -o -4 address | grep 172.17.20'
 ssh elk 'nproc; free -h; /usr/sbin/sysctl vm.max_map_count; cat /opt/elk-lab/README-FIRST.txt'
 ```
 
@@ -181,14 +181,15 @@ Expected results:
 
 - forwarding is `1`;
 - Web, DNS, SSH, and FTP services are active;
-- both timers are active;
+- the continuous benign service and periodic attack timer are active;
+- the benign orchestrator has eight worker processes;
 - client has 20 aliases in `172.16.10.0/24`;
 - attacker has 20 aliases in `172.17.20.0/24`;
 - ELK has at least four cores, approximately 16 GB RAM, and `vm.max_map_count=262144`.
 
 ## 10. Observe workloads for at least ten minutes
 
-The benign timer starts after approximately two minutes; the attack timer starts after approximately five minutes.
+The benign workers start immediately. The first attack campaign starts after approximately five to six minutes; later campaigns also include up to 60 seconds of randomized delay.
 
 ```bash
 ssh client 'sudo journalctl -u elk-lab-benign.service --since "15 minutes ago" --no-pager; sudo tail -n 20 /var/log/elk-lab/benign.jsonl'
@@ -197,7 +198,7 @@ ssh webserver 'sudo tail -n 30 /var/log/nginx/access.log; sudo tail -n 30 /var/l
 ssh fileserver 'sudo tail -n 30 /var/log/auth.log; sudo tail -n 30 /var/log/vsftpd.log'
 ```
 
-Verify that source addresses rotate and that at least one attacker alias generates both reconnaissance and an ordinary `/` request.
+Verify that benign Web sessions contain multiple requests, SSH records have varied durations, and ground-truth records include duration and byte fields. Verify that each attack campaign has start/end markers, per-action records, three attack aliases, and ordinary `/` requests mixed with reconnaissance.
 
 ## 11. Confirm traffic crosses the gateway
 
@@ -210,7 +211,7 @@ ssh gateway 'sudo timeout 30 tcpdump -ni any "host 10.10.10.10 or host 192.168.5
 In the second:
 
 ```bash
-ssh client 'sudo systemctl start elk-lab-benign.service'
+ssh client 'sudo systemctl restart elk-lab-benign.service'
 ssh attacker 'sudo systemctl start elk-lab-attack.service'
 ```
 
@@ -224,7 +225,7 @@ Save:
 - `validate-lab.sh` output;
 - install-log tails from all nodes;
 - interface and route output;
-- timer and service status;
+- continuous service, worker, timer, and campaign status;
 - representative benign/attack ground-truth lines; and
 - any failure, fix, and rerun result.
 

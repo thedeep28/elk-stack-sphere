@@ -4,6 +4,9 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-Type=oneshot
-ExecStart=/opt/elk-lab/aliases.sh
-ExecStart=/opt/elk-lab/benign-workload.sh
+Type=simple
+EnvironmentFile=-/etc/default/elk-lab-benign
+ExecStartPre=/opt/elk-lab/aliases.sh
+ExecStart=/opt/elk-lab/benign-orchestrator.sh
+Restart=always
+RestartSec=5s

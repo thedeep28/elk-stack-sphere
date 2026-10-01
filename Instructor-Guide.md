@@ -32,7 +32,7 @@ The `elk` node requests more memory and CPU. Confirm image names and capacity wi
 
 | Meeting | Instructor activity | Checkpoint |
 |---|---|---|
-| Before Week 1 | Materialize smoke test; verify packages/timers | None |
+| Before Week 1 | Materialize smoke test; verify packages, eight benign workers, and attack timer | None |
 | Week 1 start | Brief topology, rules, AI evidence | Roles and baseline |
 | Week 1 end | Data-quality review | Matrix and dashboards |
 | Week 2 middle | Detection clinic | Attack specs reviewed before execution |
@@ -58,6 +58,6 @@ Select an AI-assisted artifact at random from each ledger. Ask the student to ex
 2. Confirm mirrors expose required packages.
 3. Confirm every intended path traverses `gateway`.
 4. Confirm aliases persist across workload runs.
-5. Verify timer rates across simultaneous class copies.
+5. Verify worker count, transfer load, and campaign rate across simultaneous class copies. The profile permits transfers up to 2 GiB but serializes transfers above 512 MiB per lab; lower the configured bounds if aggregate testbed bandwidth requires it.
 6. Decide when attacker ground truth becomes visible.
 7. Add class XDC, project, due date, and submission details.

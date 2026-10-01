@@ -3,8 +3,8 @@ Description=Run BlueMon bounded attack baseline
 
 [Timer]
 OnBootSec=5min
-OnUnitActiveSec=3min
-RandomizedDelaySec=30s
+OnUnitActiveSec=5min
+RandomizedDelaySec=60s
 Persistent=true
 
 [Install]

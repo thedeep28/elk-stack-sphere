@@ -9,8 +9,10 @@ Before class use:
 3. Run `mrg compile elkdefense.model`.
 4. Materialize an instructor copy with `startexp`.
 5. Attach an XDC and run `validate-lab.sh`.
-6. Observe traffic and timer load for at least 30 minutes.
+6. Observe continuous benign-worker load and periodic attack campaigns for at least 30 minutes.
 
 The setup deliberately does **not** deploy ELK or data shippers. Those are student learning tasks. It creates the topology, services, alias pools, benign activity, bounded attack baseline, and local ground truth.
 
 Baseline ground truth is written on `attacker` to `/var/log/elk-lab/attacks.jsonl`. Benign workload results are written on `client` to `/var/log/elk-lab/benign.jsonl`.
+
+The client service runs eight independent workers using the empirical profile in `client/traffic-profile.env`. The attack timer launches a bounded parallel campaign and installs `attack-status` for live inspection. Full design and operations guidance is in the repository-level `Traffic-Generation.md`.

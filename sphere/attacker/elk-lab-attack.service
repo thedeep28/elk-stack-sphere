@@ -5,5 +5,6 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
+TimeoutStartSec=3min
 ExecStart=/opt/elk-lab/aliases.sh
 ExecStart=/opt/elk-lab/baseline-attacks.sh

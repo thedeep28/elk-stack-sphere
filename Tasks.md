@@ -51,11 +51,11 @@ Demonstrate healthy ELK, all mandatory sources, one end-to-end trace per protoco
 
 ### Task 2.1: Characterize normal activity
 
-Observe at least 30 minutes of legitimate workload before tuning on attacks. Quantify normal request rate, unique aliases, destination ports, authentication failures, and common paths. Identify two benign behaviors that could resemble attacks.
+Observe at least 30 minutes of the eight-worker legitimate workload before tuning on attacks. Quantify the protocol mix, concurrent clients, request rate, unique aliases, destination ports, transfer bytes, SSH duration, authentication failures, and common paths. Compare observed protocol proportions with the configured MAWI-derived profile and explain sampling differences. Identify two benign behaviors that could resemble attacks.
 
 ### Task 2.2: Investigate the supplied baseline
 
-Without first reading attacker ground truth, reconstruct a port scan, repeated SSH failures, and Web reconnaissance. For each, produce a timeline with aliases, targets, fields, and queries. Then compare with ground truth and document misses.
+Without first reading attacker ground truth, reconstruct a parallel campaign containing a port scan, repeated SSH failures, and Web reconnaissance. For each, produce a timeline with aliases, targets, fields, and queries. Freeze the analysis, then compare it with campaign and per-action ground truth and document misses.
 
 ### Task 2.3: Design three additional attacks
 
@@ -120,4 +120,3 @@ In 12 minutes, show topology and telemetry health; run one bounded attack with c
 ### Week 3 milestone
 
 Submit the package in [Grading](Grading.md) and complete an individual explanation check.
-

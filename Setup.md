@@ -52,16 +52,19 @@ From `client`:
 ```bash
 curl --interface 172.16.10.10 http://10.10.10.10/
 dig @10.10.10.10 portal.corp.test
-systemctl status elk-lab-benign.timer --no-pager
+systemctl status elk-lab-benign.service --no-pager
+pgrep -af benign-worker.sh
 ```
 
 From `attacker`:
 
 ```bash
 systemctl status elk-lab-attack.timer --no-pager
+sudo attack-status
 ```
 
 Do not use the attacker ground-truth log as a detection source. It exists for validation after a rule is frozen.
+See [Traffic Generation and Ground Truth](Traffic-Generation.md) for the workload model, configuration, and record fields.
 
 ## 5. Record a pre-change baseline
 

@@ -92,11 +92,14 @@ The assignment is graded out of 100 points across reproducible ELK deployment, t
 
 1. Read [Introduction and Rules](Introduction.md).
 2. Follow [Setup and Access](Setup.md) to create the entire topology with one SPHERE command.
-3. Complete [Tasks and Milestones](Tasks.md).
-4. Review [AI Use and Evidence](AI-Use.md) before using an AI assistant.
-5. Review [Submission and Grading](Grading.md) before beginning.
+3. Read [Traffic Generation and Ground Truth](Traffic-Generation.md).
+4. Complete [Tasks and Milestones](Tasks.md).
+5. Review [AI Use and Evidence](AI-Use.md) before using an AI assistant.
+6. Review [Submission and Grading](Grading.md) before beginning.
 
 Instructors should follow [SPHERE Smoke Test](SMOKE-TEST.md) before releasing the lab.
+
+Repository-level checks can be run with `bash tests/test-static.sh`. They validate shell syntax, the traffic profile, the 2 GiB cap, and the stored MAWI totals; they do not replace the SPHERE smoke test.
 
 ## Repository map
 
@@ -105,10 +108,13 @@ Instructors should follow [SPHERE Smoke Test](SMOKE-TEST.md) before releasing th
 ├── README.md
 ├── Introduction.md
 ├── Setup.md
+├── Traffic-Generation.md
 ├── Tasks.md
 ├── AI-Use.md
 ├── Grading.md
 ├── Instructor-Guide.md
+├── profiles/
+├── tools/
 └── sphere/
     ├── elkdefense.model
     ├── nodes

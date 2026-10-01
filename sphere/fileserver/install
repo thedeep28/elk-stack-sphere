@@ -4,13 +4,17 @@ exec > >(tee -a /var/log/elk-lab-install.log) 2>&1
 export DEBIAN_FRONTEND=noninteractive
 
 apt-get update
-apt-get install -y --no-install-recommends openssh-server vsftpd curl jq
+apt-get install -y --no-install-recommends openssh-server vsftpd curl jq coreutils
 
 id labadmin >/dev/null 2>&1 || useradd -m -s /bin/bash labadmin
 echo 'labadmin:training-only' | chpasswd
-mkdir -p /home/labadmin/upload /srv/shared
+mkdir -p /home/labadmin/upload /home/labadmin/downloads /srv/shared
 echo 'Quarterly planning sample for BlueMon lab.' >/srv/shared/planning.txt
-chown -R labadmin:labadmin /home/labadmin/upload
+truncate -s 4M /home/labadmin/downloads/4MiB.bin
+truncate -s 64M /home/labadmin/downloads/64MiB.bin
+truncate -s 512M /home/labadmin/downloads/512MiB.bin
+truncate -s 2G /home/labadmin/downloads/2GiB.bin
+chown -R labadmin:labadmin /home/labadmin/upload /home/labadmin/downloads
 
 cat >/etc/ssh/sshd_config.d/90-elk-lab.conf <<'EOF'
 PasswordAuthentication yes
